@@ -10,10 +10,19 @@ namespace Backend.Data
         }
         // DbSet for each model
         public DbSet<User> Users { get; set; }
+        public DbSet<Event> Events { get; set; }
+        public DbSet<Merch> Merch { get; set; }
+        public DbSet<Category> Categories { get; set; }
 
-        //protected override void OnModelCreating(ModelBuilder modelBuilder)
-        //{
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
         // Model relationships and configurations can be defined here
-        //}
+            modelBuilder.Entity<Merch>()
+            .HasOne(c => c.Category)
+            .WithMany(m => m.Merch)
+            .HasForeignKey(m => m.CategoryId)
+            .OnDelete(DeleteBehavior.NoAction);
+        }
     }
 }

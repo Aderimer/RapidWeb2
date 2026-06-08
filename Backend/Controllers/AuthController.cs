@@ -22,7 +22,7 @@ namespace Backend.Controller
 
 
         [HttpPost("register")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
         public async Task<IActionResult> Register([FromBody] RegisterDTO request)
         {
             if (await _authService.RegisterUserAsync(request.Username, request.Email, request.Password, request.Role))

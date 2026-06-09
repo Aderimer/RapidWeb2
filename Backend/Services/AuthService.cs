@@ -48,9 +48,11 @@ public class AuthService
         {
             Username = username,
             Email = email,
-            PasswordHash = passwordHasher.HashPassword(null, password),
             Role = "User"
         };
+
+        user.PasswordHash = passwordHasher.HashPassword(user, password);
+
 
         _dataContext.Users.Add(user);
         await _dataContext.SaveChangesAsync();

@@ -46,5 +46,21 @@ namespace Backend.Controller
             }
             return Unauthorized("Invalid email or password");
         }
+
+
+        [HttpDelete("userId")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> DeleteUser(int userId)
+        {
+            var user = await _dataContext.Users.FindAsync(userId);
+            if (user == null)
+            {
+                return NotFound("No user find with that ID");
+            }
+
+            _dataContext.Users.Remove(user);
+            await _dataContext.SaveChangesAsync();
+            return Ok("User deleted.");
+        }
     }
 }

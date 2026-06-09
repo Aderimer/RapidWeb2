@@ -3,7 +3,6 @@ using Backend.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
 
 namespace Backend.Controller
 {
@@ -35,7 +34,7 @@ namespace Backend.Controller
 
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
-        [Authorize(Roles = "Admin"]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> CreateCategory([FromBody] Category category)
         {
             if (category == null || string.IsNullOrEmpty(category.CategoryName))

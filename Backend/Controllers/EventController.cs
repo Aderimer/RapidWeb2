@@ -1,6 +1,7 @@
 using System.Data.Common;
 using Backend.Data;
 using Backend.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -35,7 +36,7 @@ namespace Backend.Controller
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        //[Authorize(Roles = "Admin)]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> CreateEvent([FromBody] Event events)
         {
         if (events == null) {
@@ -52,18 +53,12 @@ namespace Backend.Controller
         [HttpPatch("{eventId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> UpdateEvent(int eventId, [FromBody] Event updatedEvent)
         {
             if (updatedEvent == null)
             {
                 return BadRequest();
-            }
-
-            var events = await _dataContext.Events.FindAsync(eventId);
-            if (events == null)
-            {
-                return NotFound("No event found with that ID");
             }
 
             var existing = await _dataContext.Events.FindAsync(eventId);
@@ -83,5 +78,22 @@ namespace Backend.Controller
             return Ok(existing);
         }
 
+
+        [HttpDelete("eventId")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> DeleteEvent(int eventId)
+        {
+            var _event = await _dataContext.Events.FindAsync(eventId);
+                if (_event == null)
+                {
+                    return NotFound();
+                }
+
+            _dataContext.Events.Remove(_event);
+            await _dataContext.SaveChangesAsync();
+
+
+            return Ok("Deleted event.");
+        }
     }
 }

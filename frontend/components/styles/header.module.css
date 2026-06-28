@@ -46,6 +46,12 @@
     padding: 20px 20px 20px 50px;
   }
 
+  .navLinks a {
+    display: inline-block;
+    padding: 10px;
+    width: 300px;
+  }
+
   .navOpen {
     transform: translateX(0);
     opacity: 100%;
